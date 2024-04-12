@@ -1,0 +1,108 @@
+{% extends 'Admin/Head.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h3 align="center">New Service Center</h3>
+    <table border="1" align="center">
+        <tr>
+            <td>Sl.no</td>
+            <td>Name</td>
+            <td>Photo</td>
+            <td>Contact</td>
+            <td>Email</td>
+            <td>Address</td>
+            <td>Manufacturer</td>
+            <td>District</td>
+            <td>Place</td>
+            <td>Proof</td>
+            <td>Action</td>
+        </tr>
+        {% for i in new %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{i.scenter_name}}</td>
+            <td><img src="{{i.scenter_photo.url}}" width="150" height="150"></td>
+            <td>{{i.scenter_contact}}</td>
+            <td>{{i.scenter_email}}</td>
+            <td>{{i.scenter_address}}</td>
+            <td>{{i.manufacturer.manufacturer_name}}</td>  
+            <td>{{i.place.district.district_name}}</td>
+            <td>{{i.place.place_name}}</td>
+            <td><a href="{{i.scenter_proof.url}}" download>View</a></td>
+            <td><a href="{% url 'Webadmin:AcceptCenter' i.id %}">Accept</a><a href="{% url 'Webadmin:RejectCenter' i.id %}">Accept</a></td>
+        </tr>
+        {% endfor %}
+        </table>
+        <br><br>
+        <h3 align="center">Accepted Service Center</h3>
+    <table border="1" align="center">
+        <tr>
+            <td>Sl.no</td>
+            <td>Name</td>
+            <td>Photo</td>
+            <td>Contact</td>
+            <td>Email</td>
+            <td>Address</td>
+            <td>Manufacturer</td>
+            <td>District</td>
+            <td>Place</td>
+            <td>Proof</td>
+            <td>Action</td>
+        </tr>
+        {% for i in accept %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{i.scenter_name}}</td>
+            <td><img src="{{i.scenter_photo.url}}" width="150" height="150"></td>
+            <td>{{i.scenter_contact}}</td>
+            <td>{{i.scenter_email}}</td>
+            <td>{{i.scenter_address}}</td>
+            <td>{{i.manufacturer.manufacturer_name}}</td>  
+            <td>{{i.place.district.district_name}}</td>
+            <td>{{i.place.place_name}}</td>
+            <td><a href="{{i.scenter_proof.url}}" download>View</a></td>
+            <td><a href="{% url 'Webadmin:RejectCenter' i.id %}">Accept</a></td>
+        </tr>
+        {% endfor %}
+        </table>
+        <br><br>
+        <h3 align="center">Rejected Service Center</h3>
+    <table border="1" align="center">
+        <tr>
+            <td>Sl.no</td>
+            <td>Name</td>
+            <td>Photo</td>
+            <td>Contact</td>
+            <td>Email</td>
+            <td>Address</td>
+            <td>Manufacturer</td>
+            <td>District</td>
+            <td>Place</td>
+            <td>Proof</td>
+            <td>Action</td>
+        </tr>
+        {% for i in rejected %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{i.scenter_name}}</td>
+            <td><img src="{{i.scenter_photo.url}}" width="150" height="150"></td>
+            <td>{{i.scenter_contact}}</td>
+            <td>{{i.scenter_email}}</td>
+            <td>{{i.scenter_address}}</td>
+            <td>{{i.manufacturer.manufacturer_name}}</td>  
+            <td>{{i.place.district.district_name}}</td>
+            <td>{{i.place.place_name}}</td>
+            <td><a href="{{i.scenter_proof.url}}" download>View</a></td>
+            <td><a href="{% url 'Webadmin:AcceptCenter' i.id %}">Accept</a></td>
+        {% endfor %}
+        </table>
+</body>
+</html>
+{% endblock content %}

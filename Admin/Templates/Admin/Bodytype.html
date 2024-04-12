@@ -1,0 +1,50 @@
+{% extends 'Admin/Head.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form method="post">
+        {% csrf_token %}
+        <br>
+        <table border="1" align="center">
+            <tr>
+                <td>Bodytype</td>
+                <td><input type="text" name="Bodytype" value="{{Body.bodytype_name}}"></td>
+                <tr>
+                        <td colspan="2" align="center"><input type="submit" name="save" value="save">
+                            <input type="reset" value="cancel" name="cancel"></td>
+                </tr>
+            </table>
+            <br>
+                <table border="1" align="center">
+                   <tr>
+                    <thead>
+                        <tr>
+                            <th>si.no</th>
+                            <th>bodytype</th>
+                            <th>action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in Type %}
+                        <tr>
+                            <td>{{forloop.counter}}</td>
+                            <td>{{i.bodytype_name}}</td>
+                            <td><a href="{% url 'Webadmin:DeleteBody' i.id  %}">Delete</a>
+                                <a href="{% url 'Webadmin:updatebodytype' i.id %}">Edit</a></td>
+                            
+                        </tr>
+                        {% endfor %}
+                   </tr>
+                </table>
+            </form>
+            
+</body>
+</html>
+{% endblock content %}

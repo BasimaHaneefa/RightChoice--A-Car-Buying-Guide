@@ -1,0 +1,94 @@
+{% extends 'ServiceCenter/Header.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Requests</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 4rem 0;
+            background-color: #ffff;
+        }
+        .table-container {
+            overflow-x: auto;
+            margin: auto;
+            max-width: 96%;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #007bff;
+            color: #fff;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        a {
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <br><br><br><br>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Sl.no</th>
+                    <th>Customer</th>
+                    <th>Address & Contact</th>
+                    <th>Service</th>
+                    <th>For Date</th>
+                    <th>Details</th>
+                    <th>Car</th>
+                    <th>Booked Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in data %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ i.user.user_name }}</td>
+                    <td>{{ i.user.user_address }}, {{ i.user.user_contact }}</td>
+                    <td>{{ i.servicetype.service_name }}</td>
+                    <td>{{ i.srequest_fordate }}</td>
+                    <td>{{ i.srequest_details }}</td>
+                    <td>{{i.srequest_car}}</td>
+                    <td>{{ i.srequest_date }}</td>
+                    <td>
+                        {% if i.srequest_status == '0' %}
+                        <a href="{% url 'webcenter:AcceptRequest' i.id %}">Accept</a> | <a href="{% url 'webcenter:RejectRequest' i.id %}">Reject</a>
+                        {% elif i.srequest_status == '1' %}
+                        Request Accepted | <a href="{% url 'webcenter:RejectRequest' i.id %}">Reject</a>
+                        {% else %}
+                        Request Rejected | <a href="{% url 'webcenter:AcceptRequest' i.id %}">Accept</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
+{% endblock content %}

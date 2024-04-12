@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form method="post">
+		{% csrf_token %}
+        <table border="1">
+		<tr>
+			<label for="fname">First Name:</label>
+		    <input type="text" id="fname" name="fname"><br><br>
+		</tr>
+		<tr>
+		    <label for="lname">Last Name:</label>
+			<input type="text" id="lname" name="lname"><br><br>
+		</tr>
+			<label for="gender">Gender:</label>
+			<input type="radio" id="Male" name="gender" value="Male">
+			<label for="Male">Male</label>
+			<input type="radio" id="Female" name="gender" value="Female">
+			<label for="Female">Female</label><br><br>
+		<tr>
+			<label for="marital">Marital Status:</label>
+			<input type="radio" id="single" name="marital" value="single">
+			<label for="single">Single</label>
+			<input type="radio" id="married" name="marital" value="married">
+			<label for="married">Married</label><br><br>
+		</tr>
+		<tr>
+			<label for="department">Department:</label>
+		<select id="department" name="department">
+			<option value="sales">Sales</option>
+			<option value="marketing">Marketing</option>
+			<option value="finance">Finance</option>
+			<option value="computer">computer</option>
+			<option value="administration">administration</option>
+		</tr>
+		<tr>
+			<label for="salary">Basic Salary:</label>
+			<input type="number" id="salary" name="salary"><br><br>
+		</tr>
+		<tr>
+			<input type="submit" value="Submit">
+			<input type="reset" value="cancel" name="cancel">
+		</tr>
+    
+	</table>
+</form>
+Name={{name}}<br>
+Gender={{gender}}<br>
+Martial={{martial}}<br>
+Department={{department}}<br>
+Salary={{salary}}<br>
+TA{{TA}}<br>
+DA{{DA}}<br>
+HRA{{HRA}}<br>
+LIC{{LIC}}<br>
+PF{{PF}}<br>
+deduction{{deduction}}<br>
+netamount{{NETAMOUNT}}<br>
+
+</body>
+</html>

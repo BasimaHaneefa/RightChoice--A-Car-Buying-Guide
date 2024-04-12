@@ -1,0 +1,16 @@
+<div class="container">
+    {% for i in center %}
+    <div class="card">
+        <img src="{{i.scenter_photo.url}}" alt="Service Center Photo">
+        <div class="card-content">
+            <p><strong>Name:</strong> {{i.scenter_name}}</p>
+            <p><strong>Email:</strong> {{i.scenter_email}}</p>
+            <p><strong>Address:</strong> {{i.scenter_address}}</p>
+            <p><strong>Contact:</strong> {{i.scenter_contact}}</p>
+            <p><strong>District:</strong> {{i.place.district.district_name}}</p>
+            <p><strong>Place:</strong> {{i.place.place_name}}</p>
+            <p><a href="{% url 'webuser:Servicerequest' i.id %}">Request</a></p>
+        </div>
+    </div>
+    {% endfor %}
+</div>

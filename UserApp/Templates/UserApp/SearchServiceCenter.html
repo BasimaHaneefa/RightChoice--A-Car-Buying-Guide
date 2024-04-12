@@ -1,0 +1,157 @@
+{% extends 'UserApp/Header.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <br></br>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Centers</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #eeeeee;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        .select-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        select {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            outline: none;
+            font-size: 16px;
+            margin: 0 10px;
+            cursor: pointer;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            gap: 20px;
+        }
+
+        .card {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: calc(25% - 20px);
+            overflow: hidden;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .card img {
+            width: 100%;
+            height: 200px; /* Adjust based on your preference */
+            object-fit: cover;
+        }
+
+        .card-content {
+            padding: 20px;
+        }
+
+        .card-content p {
+            margin: 10px 0;
+            line-height: 1.5;
+        }
+
+        .card-content p strong {
+            color: #000;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 1024px) {
+            .card {
+                width: calc(50% - 20px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .card {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+<br><br>
+<div class="select-container">
+    <select name="seldistrict" id="seldistrict" onchange="searchcenter()">
+        <option value="">Select District</option>
+        {% for i in district %}
+        <option value="{{i.id}}">{{i.district_name}}</option>
+        {% endfor %}
+    </select>
+    <select name="selplace" id="selplace" onchange="searchcenter()">
+        <option value="">Select Place</option>
+    </select>
+            <select id="manufacturer" name="manufacturer"  onchange="searchcenter()">
+                <option value="">Select Manufacturer</option>
+                {% for i in manufact %}
+                <option value="{{i.id}}">{{i.manufacturer_name}}</option>
+                {% endfor %}
+            </select>
+       
+</div>
+<div id="Result">
+<div class="container">
+    {% for i in center %}
+    <div class="card">
+        <img src="{{i.scenter_photo.url}}" alt="Service Center Photo">
+        <div class="card-content">
+            <p><strong>Name:</strong> {{i.scenter_name}}</p>
+            <p><strong>Email:</strong> {{i.scenter_email}}</p>
+            <p><strong>Address:</strong> {{i.scenter_address}}</p>
+            <p><strong>Contact:</strong> {{i.scenter_contact}}</p>
+            <p><strong>District:</strong> {{i.place.district.district_name}}</p>
+            <p><strong>Place:</strong> {{i.place.place_name}}</p>
+            <p><a href="{% url 'webuser:Servicerequest' i.id %}">Request</a></p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+</div>
+</body>
+</html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $("#seldistrict").change(function () {
+        var did = $(this).val();
+        var ur = "{% url 'webguest:Ajaxplace'  %}";
+        $.ajax({
+            url: ur,
+            data: { disd: did, },
+            success: function (data) {
+                $("#selplace").html(data);
+            },
+        });
+    });
+    function searchcenter() {
+      var dist = document.getElementById("seldistrict").value
+      var place = document.getElementById("selplace").value
+      var man=document.getElementById("manufacturer").value
+        var ur = "{% url 'webuser:AjaxSearchCenter' %}";
+        $.ajax({
+            url: ur,
+            data: { dist: dist,place:place,man:man},
+            success: function (data) {
+                $("#Result").html(data);
+            },
+        });
+    }
+</script>
+{% endblock content %}

@@ -1,0 +1,49 @@
+{% extends 'Guest/Header.html' %}
+{% load static %}
+{% block content %}
+<br>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <br><br><br>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <table border="1" align="center" style="width: 50%;height: 50%;">
+            <tr>
+                <td><p align="center"><strong>Name</strong> </p></td>
+                <td><input required type="text" name="name" title="Name Allows only Alphabets,Spaces And First Letter Must Be Captial Letter" pattern="[A-Z]+[a-zA-Z]*$"></td>
+            </tr>
+            <tr>
+                <td><p align="center"><strong>Email</strong> </p></td>
+                <td><input type="email" required name="email" id=""></td>
+            </tr>
+            <tr>
+                <td><p align="center"><strong>Contact</strong> </p></td>
+                <td><input type="text" required name="contact" id="" pattern="[6-9]{1}[0-9]{9}" title="Phone number with 7-9 and remaing 9 digit with 0-9"></td>
+            </tr>
+            <tr>
+                <td><p align="center"><strong>Address</strong> </p></td>
+                <td><textarea name="address" required cols="30" rows="10"></textarea></td>
+            </tr>
+            <tr>
+                <td><p align="center"><strong>Photo</strong> </p></td>
+                <td><input type="file" name="photo" required id=""></td>
+            </tr>
+            <tr>
+                <td><p align="center"><strong>Password</strong> </p></td>
+                <td><input type="password" required pattern="(?=.*\d)(?=.*[A-Z]).{8,}" title="Must contain at least one number , one uppercase and lowercase letter, and at least 8 or more chharaters" name="password" id="" ></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center"><input type="submit" value="Save" name="Save">
+                <input type="reset" value="Cancel" name="Cancel"></td>
+            </tr>
+        </table>
+    </form>
+</body>
+</html>
+{% endblock content %}

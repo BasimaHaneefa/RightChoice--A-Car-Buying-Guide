@@ -1,0 +1,42 @@
+{% extends 'ServiceCenter/Header.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <br><br><br>
+    <form method="post">
+        {% csrf_token %}
+        <table border="1" align="center" style="width: 20%;height: 10%;">
+            <tr>
+                <td style="padding-left: 5%;">Name</td>
+                <td style="padding-left: 5%;"><input required type="text" name="name" title="Name Allows only Alphabets,Spaces And First Letter Must Be Captial Letter" id="" value="{{center.scenter_name}}"></td>
+            </tr>
+            <tr>
+                <td style="padding-left: 5%;">Email</td>
+                <td style="padding-left: 5%;"><input type="text" required  name="Email" value="{{center.scenter_email}}"></td>
+            </tr>
+            <tr>
+                <td style="padding-left: 5%;">Contact</td>
+                <td ><input required type="text" name="Contact" pattern="[6-9]{1}[0-9]{9}" title="Phone number with 7-9 and remaing 9 digit with 0-9" value="{{center.scenter_contact}}"></td>
+            </tr>
+            <tr>
+                <td style="padding-left: 5%;">address</td>
+                <td style="padding-left: 10%;"><textarea  name="Address" required>{{center.scenter_address}}</textarea></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center" style="padding-left: 15%;">
+                    <input type="submit" value="Save" name="Save">
+                    <input type="reset" value="Cancel" name="Cancel">
+                </td>
+            </tr>
+        </table>
+    </form>
+</body>
+</html>
+{% endblock content %}

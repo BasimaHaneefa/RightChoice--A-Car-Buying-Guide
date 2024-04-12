@@ -1,0 +1,170 @@
+{% extends 'UserApp/Header.html' %}
+{% load static %}
+{% block content %}
+<br><br><br>
+<br>
+<br>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Data Display</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+    integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <style>
+        .data-card {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px;
+            width: 23%;
+            float: left;
+            box-sizing: border-box;
+        }
+
+        .data-card img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .filter-container {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body class="container">
+    <br><br>
+<form method="post" id="search" data-make-url="{% url 'Webadmin:ajaxmake' %}" data-variant-url="{% url 'Webadmin:ajaxvariant' %}" data-search-url="{% url 'webuser:ajaxsearch' %}" data-budget-url="{% url 'webuser:ajaxbudget' %}">
+    <div class="filter-container row">
+        <div class="col-md-3">
+            <label for="manufacturer-filter">Manufacturer:</label>
+            <select class="form-control" id="manufacturer-filter" onclick="searchcar()">
+                <option value="">All Manufacturer</option>
+                
+                {% for i in manufact %}
+                    <option value="{{ i.id }}">{{ i.manufacturer_name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="col-md-3">
+            <label for="make-filter">Make:</label>
+            <select class="form-control" id="make-filter" onclick="searchcar()">
+                <option value="">All Make</option>
+                {% for i in make %}
+                <option value="{{ i.id }}">{{ i.make_name }}</option>
+            {% endfor %}
+            </select>
+        </div>
+
+        <div class="col-md-3">
+            <label for="variant-filter">Body Type:</label>
+            <select class="form-control" id="variant-filter" onclick="searchcar()">
+                <option value="">All BodyType</option>
+                {% for i in variant %}
+                <option value="{{ i.id }}">{{ i.bodytype_name }}</option>
+            {% endfor %}
+           
+        
+        <form>
+        <div class="col-md-3">
+            <label for="budget">Budget:</label>
+            <input type="text" class="form-control" id="budget" placeholder="Enter Budget" onkeyup="filterbudget(),searchcar()">
+        </div>
+    </div>
+</form>
+    <h1>Car Data</h1>
+
+    <div id="Result">
+    {% for car,a in cars %}
+        <div class="data-card col-md-4">
+        <a href="{% url 'webuser:viewgallery' car.id %}"><img src="{{ car.car_photo.url }}" alt="Car Photo" class="img-fluid"></a>
+
+        {% for k in ar %}
+        {% if k <= a %}
+        <i class="fas fa-star text-warning"></i>
+        {% else %}
+        <i class="fas fa-star star-light mr-1 main_star"></i>
+        {% endif %}
+        {% endfor %}
+                
+        <p><strong>Manufacturer:</strong> {{ car.variant.make.manufacturer.manufacturer_name }}</p>
+        <p><strong>Make:</strong> {{ car.variant.make.make_name }}</p>
+        <p><strong>Variant:</strong> {{ car.variant.variant_name }}</p>
+        <p><strong>Transmission:</strong> {{ car.transmission.transmission_name }}</p>
+        <p><strong>Fuel Type:</strong> {{ car.fueltype.fueltype_name }}</p>
+        <p><strong>Body Type:</strong> {{ car.bodytype.bodytype_name }}</p>
+        <p><strong>Production Year:</strong> {{ car.production_year }}</p>
+        <p><strong>Mileage:</strong> {{ car.car_mileage }}</p>
+        <p><strong>Price:</strong> {{ car.car_price }}</p>
+        <p><strong>Engine Size:</strong> {{ car.engine_size }}</p>
+        <p><strong>Horsepower:</strong> {{ car.car_horsepower }}</p>
+        <p><strong>Torque:</strong> {{ car.car_torque }}</p>
+        <p><strong>Seat Capacity:</strong> {{ car.seat_capacity }}</p>
+        <p><strong>Gear:</strong> {{ car.car_gear }}</p>
+        <p><strong>Tire:</strong> {{ car.car_tire }}</p>
+        <p align="center"><a href="{% url 'webuser:rating' car.id %}">Rate the Car</a></p>
+        
+    </div>
+    {% endfor %}
+    </div>
+
+    <!-- Add Bootstrap JS and Popper.js -->
+    <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $("#manufacturer-filter").change(function () {
+        var did = $(this).val();
+        var ur = $("#search").attr("data-make-url");
+        $.ajax({
+            url: ur,
+            data: { disd: did, },
+            success: function (data) {
+                $("#make-filter").html(data);
+            },
+        });
+    });
+    $("#make-filter").change(function () {
+        var did = $(this).val();
+        var ur = $("#search").attr("data-variant-url");
+        $.ajax({
+            url: ur,
+            data: { disd: did, },
+            success: function (data) {
+                $("#variant-filter").html(data);
+            },
+        });
+    });
+    function searchcar() {
+      var man = document.getElementById("manufacturer-filter").value
+      var make = document.getElementById("make-filter").value
+      var variant = document.getElementById("variant-filter").value
+      var budget = document.getElementById("budget").value
+        var ur = $("#search").attr("data-search-url");
+        $.ajax({
+            url: ur,
+            data: { man: man, make: make, variant: variant, budget: budget },
+            success: function (data) {
+                $("#Result").html(data);
+            },
+        });
+    }
+    function filterbudget() {
+      var budget = document.getElementById("budget").value
+        var ur = $("#search").attr("data-budget-url");
+        $.ajax({
+            url: ur,
+            data: { budget: budget},
+            success: function (data) {
+                $("#Result").html(data);
+            },
+        });
+    }
+</script>
+</body>
+</html> 
+{% endblock content %}

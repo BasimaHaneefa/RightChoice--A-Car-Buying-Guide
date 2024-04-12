@@ -1,0 +1,51 @@
+{% extends 'UserApp/Header.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <table border="1" align="center" style="width: 30%;height:35%;">
+        <br>
+        <br>
+        <br>
+
+        <tr>
+            <td style="padding-left: 2%;">Sl.no</td>
+            <td>Service Center</td>
+            <td>Address & Contact</td>
+            <td>Service</td>
+            <td>For Date</td>
+            <td>Details</td>
+            <td>Car</td>
+            <td>Booked Date</td>
+            <td>Status</td>
+        </tr>
+        {% for i in data %}
+        <tr>
+            <td style="padding-left: 3%;">{{forloop.counter}}</td>
+            <td>{{i.scenter.scenter_name}}</td>
+            <td>{{i.scenter.scenter_address}},{{i.scenter.scenter_contact}}</td>
+            <td>{{i.servicetype.service_name}}</td>
+            <td>{{i.srequest_fordate}}</td>
+            <td>{{i.srequest_details}}</td>
+            <td>{{i.srequest_car}}</td>
+            <td>{{i.srequest_date}}</td>
+            <td>{% if i.srequest_status == '0' %}
+                Not Confirmed
+                {% elif i.srequest_status == '1' %}
+                Request Accepted
+                {% else %}
+                Request Rejected
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
+{% endblock content %}

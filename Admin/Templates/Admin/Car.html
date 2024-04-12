@@ -1,0 +1,204 @@
+{% extends 'Admin/Head.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Car Information Table</title>
+</head>
+<body>
+
+<h2>Car Information</h2>
+
+<form method="post" id="carform" data-make-url="{% url 'Webadmin:ajaxmake' %}" data-variant-url="{% url 'Webadmin:ajaxvariant' %}" enctype="multipart/form-data">
+    {% csrf_token %}
+    <table border="1">
+  <tr>
+    <td>Manufacturer:</td>
+    <td>
+      <select name="manufacturer" id="manufacturer">
+        <option value="">select</option>
+       
+        {% for i in manufact  %}
+        <option value="{{i.id}}">{{i.manufacturer_name}}</option>
+        {% endfor %}
+      </select>
+      
+    </td>
+  </tr>
+  <tr>
+    <td>Make:</td>
+    <td>
+      <select name="make" id="make">
+        <option value="">select</option>
+        <option value="accord">Accord</option>
+        <!-- Add more options as needed -->
+      </select>
+    </td>
+  </tr>
+  <tr>
+    <td>Variant:</td>
+    <td>
+      <select name="variant" id="variant">
+        <option value="">select</option>
+        <option value="coupe">Coupe</option>
+        <!-- Add more options as needed -->
+      </select>
+    </td>
+  </tr>
+  <tr>
+    <td>Fuel Type:</td>
+    <td>
+      <select name="fueltype">
+        <option value="">select</option>
+        {% for i in fuel  %}
+        <option value="{{i.id}}">{{i.fueltype_name}}</option>
+        {% endfor %}
+      </select>
+    </td>
+  </tr>
+  <tr>
+    <td>Transmission:</td>
+    <td>
+      <select name="transmission">
+        <option value="">select</option>
+        {% for i in trans  %}
+        <option value="{{i.id}}">{{i.transmission_name}}</option>
+        {% endfor %}
+      </select>
+    </td>
+  </tr>
+  <tr>
+    <td>Body Type:</td>
+    <td>
+      <select name="bodytype">
+        <option value="">select</option>
+        {% for i in body  %}
+        <option value="{{i.id}}">{{i.bodytype_name}}</option>
+        {% endfor %}
+      </select>
+    </td>
+  </tr>
+  <tr>
+    <td>Production Year:</td>
+    <td><input type="text" name="productionYear"></td>
+  </tr>
+  <tr>
+    <td>Mileage:</td>
+    <td><input type="text" name="mileage"></td>
+  </tr>
+  <tr>
+    <td>Price:</td>
+    <td><input type="text" name="price"></td>
+  </tr>
+  <tr>
+    <td>Engine Size:</td>
+    <td><input type="text" name="engineSize"></td>
+  </tr>
+  <tr>
+    <td>Horsepower:</td>
+    <td><input type="text" name="horsepower"></td>
+  </tr>
+  <tr>
+    <td>Torque:</td>
+    <td><input type="text" name="torque"></td>
+  </tr>
+  <tr>
+    <td>Seat Capacity:</td>
+    <td><input type="text" name="seatCapacity"></td>
+  </tr>
+  <tr>
+    <td>Gear:</td>
+    <td><input type="text" name="gear"></td>
+  </tr>
+  <tr>
+    <td>Tire size:</td>
+    <td><input type="text" name="tire"></td>
+  </tr>
+  <tr>
+    <td>Photo:</td>
+    <td><input type="file" name="carPhoto"></td>
+  <tr>
+    <td colspan="2" align="center"><input type="submit" name="save" value="save">
+        <input type="reset" value="cancel" name="cancel"></td>
+        <table border="1">
+            <tr>
+             <thead>
+                 <tr>
+                     <th>si.no</th>
+                     <th>Manufacturer</th>
+                     <th>Make</th>
+                     <th>Variant</th>
+                     <th>Body</th>
+                     <th>Fuel</th>
+                     <th>Transmission</th>
+                     <th>Productionyear</th>
+                     <th>Mileage</th>
+                     <th>Price</th>
+                     <th>Engine size</th>
+                     <th>Horsepower</th>
+                     <th>Torque</th>
+                     <th>Photo</th>
+                     <th>seatCapacity</th>
+                     <th>Gear</th>
+                     <th>Tire Size</th>
+                     <th>action</th>
+                 </tr>
+             </thead>
+             <tbody>
+              {% for i in car  %}
+              <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{i.variant.make.manufacturer.manufacturer_name}}</td>
+                <td>{{i.variant.make.make_name}}</td>
+                <td>{{i.variant.variant_name}}</td>
+                <td>{{i.bodytype.bodytype_name}}</td>
+                <td>{{i.fueltype.fueltype_name}}</td>
+                <td>{{i.transmission.transmission_name}}</td>
+                <td>{{i.production_year}}</td>
+                <td>{{i.car_mileage}}</td>
+                <td>{{i.car_price}}</td>
+                <td>{{i.engine_size}}</td>
+                <td>{{i.car_horsepower}}</td>
+                <td>{{i.car_torque}}</td>
+                <td><img src="{{i.car_photo.url}}"width="120" height="120" ></td>
+                <td>{{i.seat_capacity}}</td>
+                <td>{{i.car_gear}}</td>
+                <td>{{i.car_tire}}</td>
+                <td><a href="{% url 'Webadmin:deletecar' i.id %}">Delete</a>|
+                  <a href="{% url 'Webadmin:Gallery' i.id %}">Add Gallery</a></td>
+              </tr>
+              {% endfor %}
+             </tbody>
+</table>
+
+</body>
+</html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $("#manufacturer").change(function () {
+        var did = $(this).val();
+        var ur = $("#carform").attr("data-make-url");
+        $.ajax({
+            url: ur,
+            data: { disd: did, },
+            success: function (data) {
+                $("#make").html(data);
+            },
+        });
+    });
+    $("#make").change(function () {
+        var did = $(this).val();
+        var ur = $("#carform").attr("data-variant-url");
+        $.ajax({
+            url: ur,
+            data: { disd: did, },
+            success: function (data) {
+                $("#variant").html(data);
+            },
+        });
+    });
+</script>
+{% endblock content %}

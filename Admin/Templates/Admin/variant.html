@@ -1,0 +1,88 @@
+{% extends 'Admin/Head.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form method="post" id="variantform" data-make-url="{% url 'Webadmin:ajaxmake' %}">
+        {% csrf_token %}
+        <table border="1" >
+        <tr>
+          <td><b>Manufacturer:</b></td>
+          <td>
+            <select id="manufacturer" name="manufacturer">
+              <option value="">Select</option>
+              {% for i in manufact  %}
+              <option value="{{i.id}}">{{i.manufacturer_name}}</option>
+              {% endfor %}
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td><b>Make:</b></td>
+          <td>
+            <select id="make" name="make">
+              <option value="">Select</option>
+              
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td><b>Variant:</b></td>
+          <td><input type="text" id="name" name="Variant"></td>
+        </tr>
+      
+          <tr>
+            <td colspan="2" align="center"><input type="submit" name="save" value="save">
+                <input type="reset" value="cancel" name="cancel">
+          </td>
+        </tr>
+      <table border="1" align="center">
+        <tr>
+         <thead>
+             <tr>
+                 <th>si.no</th>
+                 <th>Manufacturer</th>
+                 <th>Make</th>
+                 <th>Variant</th>
+                 <th>action</th>
+             </tr>
+         </thead>
+         <tbody>
+          {% for i in variant %}
+          <tr>
+           
+            <td>{{forloop.counter}}</td>
+            <td>{{i.make.manufacturer.manufacturer_name}}</td>
+            <td>{{i.make.make_name}}</td>
+            <td>{{i.variant_name}}</td>
+            <td><a href="{% url 'Webadmin:Delvariant'  i.id %}">Delete</a></td>
+            </tr>
+            {% endfor %}
+         </tbody>
+        </table>
+        </table>
+    </form>
+</body>
+</html>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $("#manufacturer").change(function () {
+        var did = $(this).val();
+        var ur = $("#variantform").attr("data-make-url");
+        $.ajax({
+            url: ur,
+            data: { disd: did, },
+            success: function (data) {
+                $("#make").html(data);
+            },
+        });
+    });
+</script>
+{% endblock content %}   
